@@ -3,7 +3,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>メダル落とし風ゲーム</title>
+  <title>動くスライダー付きメダル落としゲーム</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -38,6 +38,19 @@
     .medal {
       background: silver;
     }
+    .pusher {
+      position: absolute;
+      width: 100%;
+      height: 10px;
+      background: #999;
+      top: 300px;
+      animation: pushMove 2s infinite;
+    }
+    @keyframes pushMove {
+      0% { top: 300px; }
+      50% { top: 320px; }
+      100% { top: 300px; }
+    }
     #result {
       font-size: 20px;
       margin-top: 15px;
@@ -51,10 +64,11 @@
 </head>
 <body>
 
-<h1>メダル落とし風10円ゲーム</h1>
+<h1>スライド付き！メダル落とし10円ゲーム</h1>
 <div id="game">
   <div class="medal" style="top: 250px;"></div>
   <div class="medal" style="top: 280px;"></div>
+  <div class="pusher"></div>
 </div>
 <button onclick="dropCoin()">10円投入！</button>
 <div id="result"></div>
@@ -68,14 +82,14 @@
 
     let position = 0;
     const interval = setInterval(() => {
-      if (position >= 240) {
+      if (position >= 270) {
         clearInterval(interval);
-        const isSuccess = Math.random() < 0.4; // 40%でメダル落下
-        document.getElementById('result').textContent = isSuccess ? 'メダル1枚GET！' : '失敗…もう一度！';
+        const isSuccess = Math.random() < 0.5; // 50%でメダル落下
+        document.getElementById('result').textContent = isSuccess ? 'メダル1枚GET！' : '失敗…次は当てよう！';
         if (isSuccess) {
-          const medal = document.querySelector('.medal');
-          if (medal) {
-            medal.remove(); // メダル1枚消す
+          const medals = document.querySelectorAll('.medal');
+          if (medals.length > 0) {
+            medals[0].remove(); // メダル1枚消す
           }
         }
       } else {
