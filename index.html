@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>メダル落とし風ゲーム</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #fefbd8;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    #game {
+      position: relative;
+      margin: 0 auto;
+      width: 300px;
+      height: 500px;
+      background: #eee;
+      border: 3px solid #333;
+      overflow: hidden;
+    }
+    .coin, .medal {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      left: 135px;
+    }
+    .coin {
+      background: gold;
+    }
+    .medal {
+      background: silver;
+    }
+    #result {
+      font-size: 20px;
+      margin-top: 15px;
+    }
+    button {
+      margin-top: 20px;
+      font-size: 18px;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>メダル落とし風10円ゲーム</h1>
+<div id="game">
+  <div class="medal" style="top: 250px;"></div>
+  <div class="medal" style="top: 280px;"></div>
+</div>
+<button onclick="dropCoin()">10円投入！</button>
+<div id="result"></div>
+
+<script>
+  function dropCoin() {
+    const coin = document.createElement('div');
+    coin.className = 'coin';
+    coin.style.top = '0px';
+    document.getElementById('game').appendChild(coin);
+
+    let position = 0;
+    const interval = setInterval(() => {
+      if (position >= 240) {
+        clearInterval(interval);
+        const isSuccess = Math.random() < 0.4; // 40%でメダル落下
+        document.getElementById('result').textContent = isSuccess ? 'メダル1枚GET！' : '失敗…もう一度！';
+        if (isSuccess) {
+          const medal = document.querySelector('.medal');
+          if (medal) {
+            medal.remove(); // メダル1枚消す
+          }
+        }
+      } else {
+        position += 5;
+        coin.style.top = position + 'px';
+      }
+    }, 20);
+  }
+</script>
+
+</body>
+</html>
